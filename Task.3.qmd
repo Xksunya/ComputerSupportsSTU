@@ -1,0 +1,69 @@
+---
+title: "Task 3"
+author: "Kseniia Vii"
+date: "11/19/2024"
+format: html
+editor: visual
+---
+
+## Inroduction
+
+In this task, we are exploring the `airquality.csv` dataset.
+
+Read the dataset Load necessary library
+
+```{r}
+df <- airquality
+```
+
+1.  What are the column names of the data frame?
+
+```{r}
+colnames(df)
+```
+
+2.  What are the row names of the data frame?
+
+```{r}
+rownames(airquality)
+```
+
+3.  Extract the first 6 rows of the data frame and print them to the console
+
+```{r}
+head(airquality, 6)
+```
+
+4.  How many observations (i.e. rows) are in this data frame?
+
+```{r}
+nrow(airquality)
+```
+
+5.  Extract the last 6 rows of the data frame and print them to the console
+
+```{r}
+tail(airquality, 6)
+```
+
+6.  How many missing values are in the "Ozone" column of this data frame?
+
+```{r}
+sum(is.na(airquality$Ozone))
+```
+
+7.  What is the mean of the "Ozone" column in this dataset? Exclude missing values (coded as NA) from this calculation.
+
+```{r}
+mean(airquality$Ozone, na.rm = TRUE)
+```
+
+8.  Extract the subset of rows of the data frame where Ozone values are above 31 and Temp values are above 90.
+
+```{r}
+library(dplyr)
+subset_airquality <- airquality |> 
+  filter(Ozone > 31 & Temp > 90)
+
+print(subset_airquality)
+```
