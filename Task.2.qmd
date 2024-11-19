@@ -1,0 +1,130 @@
+---
+title: "Task 2"
+author: "Kseniia Vii"
+date: "11/12/2024"
+format: html
+editor: visual
+---
+
+## Quarto
+
+## Subsetting data. Working with NA
+
+Create a random vector with 50 normally distributed numbers
+
+```{r}
+v <- rnorm(50)
+```
+
+Print the 10th item
+
+```{r}
+cat("10th item:", v[10], "\n")
+```
+
+Print items from 10th to 20th (including 20th item)
+
+```{r}
+cat("Items from 10th to 20th:", v[10:20], "\n")
+```
+
+Print 10 items starting from the 5th
+
+```{r}
+cat("10 items starting from 5th:", v[5:(5+9)], "\n")
+```
+
+Print all items bigger than 0
+
+```{r}
+cat("Items bigger than 0:", v[v > 0], "\n")
+```
+
+Print the last 5 items
+
+```{r}
+cat("Last 5 items:", v[(length(v)-4):length(v)], "\n")
+```
+
+Create the data frame
+
+```{r}
+df <- data.frame(a = rnorm(50), b = 1:50, cc = sample(letters, 50, replace = TRUE))
+```
+
+Print the last 10 rows
+
+```{r}
+cat("Last 10 rows:\n")
+print(tail(df, 10))
+```
+
+Print the 15th item of column cc
+
+```{r}
+cat("15th item of column cc:", df$cc[15], "\n")
+```
+
+Subset columns a and b and rows from 10th to 20th (including 20th)
+
+```{r}
+cat("Subset of columns a and b from 10th to 20th:\n")
+print(df[10:20, c("a", "b")])
+```
+
+Create a new vector from column b
+
+```{r}
+new_vector_b <- df$b
+```
+
+Print the new vector from column b
+
+```{r}
+cat("New vector from column b:\n")
+print(new_vector_b)
+```
+
+Create a random vector with 30 normally distributed numbers
+
+```{r}
+v_na <- rnorm(30)
+```
+
+Randomly sample a number of NA values to insert
+
+```{r}
+num_na <- sample(10, 1)
+```
+
+Insert NA values into the vector
+
+```{r}
+v_na[sample(30, num_na)] <- NA
+```
+
+Print all not NA items
+
+```{r}
+cat("All not NA items:\n")
+print(v_na[!is.na(v_na)])
+```
+
+Find how many NA values the vector has
+
+```{r}
+num_na_values <- sum(is.na(v_na))
+cat("Number of NA values:", num_na_values, "\n")
+```
+
+Find min, max, and mean for the vector (excluding NA values)
+
+```{r}
+vector_min <- min(v_na, na.rm = TRUE)
+vector_max <- max(v_na, na.rm = TRUE)
+vector_mean <- mean(v_na, na.rm = TRUE)
+
+cat("Minimum value:", vector_min, "\n")
+cat("Maximum value:", vector_max, "\n")
+cat("Mean value:", vector_mean, "\n")
+```
