@@ -1,0 +1,116 @@
+---
+title: "Task 5"
+author: "Kseniia Vii"
+date: "11/27/2024"
+format: html
+editor: visual
+---
+
+## Quarto
+
+# Function to prepare the Full Dataset
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+prepare_dataset <- function(folder_path) {
+  # List all files in the folder
+  files <- list.files(folder_path, pattern = "*.csv", full.names = TRUE)
+  
+  # Initialize an empty list to store data frames
+  all_data <- list()
+  
+  # Loop through each file
+  for (file in files) {
+    # Read the data
+    data <- read.csv(file)
+    
+    # Extract city name and day type
+    name_day <- extract_name_day_type(file)
+    data$city <- name_day[1]
+    data$day_type <- name_day[2]
+    
+    # Append to the list
+    all_data[[file]] <- data
+  }
+  
+  # Combine all data into a single data frame
+  merged_data <- bind_rows(all_data)
+  
+  # Save the merged dataset to a CSV file
+  write.csv(merged_data, "./data/airbnb.csv", row.names = FALSE)
+  
+  return(merged_data)
+}
+```
+
+# Histogram
+
+```{r}
+# Load the dataset
+airbnb_data <- read.csv("./data/airbnb.csv")
+
+# Create a histogram for "realSum" (Airbnb prices)
+hist(airbnb_data$realSum,
+     breaks = 30, # Number of bins
+     col = "lightblue", # Bar color
+     main = "Distribution of Airbnb Prices", # Title
+     xlab = "Price (realSum)", # X-axis label
+     ylab = "Frequency", # Y-axis label
+     border = "black") # Border color
+```
+
+# Scatter Plot
+
+```{r}
+library(ggplot2)
+
+# Create a scatter plot for Price vs. Distance to City Center
+ggplot(airbnb_data, aes(x = dist, y = realSum, color = day_type)) +
+  geom_point(alpha = 0.6) + # Scatter points
+  labs(
+    title = "Airbnb Prices vs. Distance to City Center",
+    x = "Distance to City Center (km)",
+    y = "Price (realSum)",
+    color = "Day Type" # Legend label
+  ) +
+  theme_minimal()
+```
+
+# Boxplot
+
+```{r}
+# Create a boxplot for Prices by City
+ggplot(airbnb_data, aes(x = city, y = realSum, fill = day_type)) +
+  geom_boxplot() +
+  labs(
+    title = "Airbnb Prices by City and Day Type",
+    x = "City",
+    y = "Price (realSum)",
+    fill = "Day Type"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + # Rotate x-axis labels
+  scale_fill_brewer(palette = "Set3") # Custom color palette
+```
+
+# Custom Plot
+
+```{r}
+# Aggregate data: Average price by city
+avg_price_by_city <- airbnb_data %>%
+  group_by(city) %>%
+  summarize(avg_price = mean(realSum, na.rm = TRUE))
+
+# Create a bar plot for average prices
+ggplot(avg_price_by_city, aes(x = reorder(city, -avg_price), y = avg_price)) +
+  geom_bar(stat = "identity", fill = "lightgreen") +
+  labs(
+    title = "Average Airbnb Price by City",
+    x = "City",
+    y = "Average Price (realSum)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) # Rotate x-axis labels
+```
